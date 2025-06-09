@@ -1,6 +1,7 @@
 # Helper Functions for interfacing with TF2
 # Stolen from the ACRV 2017 Amazon Robotics Challenge
 
+
 import rospy
 import geometry_msgs.msg as gmsg
 import tf2_ros
@@ -46,8 +47,7 @@ def convert_pose(pose, from_frame, to_frame):
 
     try:
         trans = tfBuffer.lookup_transform(to_frame, from_frame, rospy.Time(0), rospy.Duration(1.0))
-    except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException), e:
-        print(e)
+    except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
         rospy.logerr('FAILED TO GET TRANSFORM FROM %s to %s' % (to_frame, from_frame))
         return None
 
