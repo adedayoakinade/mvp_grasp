@@ -124,6 +124,8 @@ class GGCNNService:
 
 if __name__ == '__main__':
     rospy.init_node('ggcnn_service')
+    rospy.loginfo('Starting GGCNN Service...')
     import dougsm_helpers.tf_helpers as tfh
     GGCNN = GGCNNService()
+    rospy.loginfo('GGCNN Service is ready.')
     rospy.spin()

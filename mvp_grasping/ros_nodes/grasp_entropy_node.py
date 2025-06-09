@@ -341,5 +341,7 @@ class ViewpointEntropyCalculator:
 
 if __name__ == '__main__':
     rospy.init_node('grasp_entropy_node')
+    rospy.loginfo('Starting Viewpoint Entropy Calculator Node')
     VEC = ViewpointEntropyCalculator()
+    rospy.loginfo('Viewpoint Entropy Calculator Node started successfully')
     rospy.spin()
