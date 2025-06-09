@@ -9,15 +9,3 @@ tensorflow==1.14.0
 pyyaml
 rospkg
 scikit-build
-
-# tensorflow
-# numpy
-# h5py
-# matplotlib
-# Pillow
-# scikit-image
-# pybullet
-# scikit-build
-# pyyaml
-# rospkg
-# opencv-python==4.0.0.21
