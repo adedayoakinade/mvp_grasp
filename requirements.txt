@@ -6,7 +6,6 @@
 # pybullet==2.4.8
 # scikit-image==0.14.5
 # tensorflow-gpu==1.14.0
-
 tensorflow==2.2.0
 numpy==1.18.5
 h5py==2.10.0
