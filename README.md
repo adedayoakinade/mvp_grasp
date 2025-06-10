@@ -47,7 +47,7 @@ This code is designed around a Franka Emika Panda robot using an Intel Realsense
 
 **Installation:**
 
-Clone this repository into your ROS worksapce and run `rosdep install --from-paths src --ignore-src --rosdistro=<your_rosdistro> -y` and then `catkin_make`/`catkin build`.
+Clone this repository into your ROS worksapce and run `rosdep install --from-paths src --ignore-src --rosdistro=<your_rosdistro> -y` and then `catkin_make -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=/path/to/libfranka/build`.
 
 Create a virtual environment in Python2.7 (if you need to)
 `sudo apt install virtualenv`
