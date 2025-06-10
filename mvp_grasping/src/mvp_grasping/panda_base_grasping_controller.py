@@ -25,9 +25,13 @@ from mvp_grasping.srv import NextViewpoint, AddFailurePoint, AddFailurePointRequ
 
 
 class Logger:
-    def __init__(self, output_desc='run', output_dir='~'):
+    def __init__(self, output_desc='run', output_dir='/home/hrigroup/adedayo_ws/src/mvp_grasp/experiments'):
         dt = datetime.datetime.now().strftime('%m%d_%H%M%S')
         self.out_file = os.path.join(output_dir, '%s_%s.txt' % (dt, output_desc))
+        rospy.loginfo(self.out_file)
+        # Creates a new file
+        with open(self.out_file, 'w') as fp:
+            pass
 
     def write_line(self, l):
         with open(self.out_file, 'a') as f:
