@@ -49,10 +49,24 @@ This code is designed around a Franka Emika Panda robot using an Intel Realsense
 
 Clone this repository into your ROS worksapce and run `rosdep install --from-paths src --ignore-src --rosdistro=<your_rosdistro> -y` and then `catkin_make`/`catkin build`.
 
+Create a virtual environment in Python2.7 (if you need to)
+`sudo apt install virtualenv`
+`virtualenv -p /usr/bin/python2.7 mvp_grasp_env`
+`source mvp_grasp_env/bin/activate`
+
+If using a virtual environment, link some useful modules in the system wide Python to the virtual environment.
+
+Run
+`python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"` to get the directory of the Python libraries in the virtual environment
+
+Link the libraries
+`ln -s /usr/lib/python2.7/dist-packages/* /directory/to/virtual_env/mvp_grasp_env/lib/python2.7/site-packages/`
+
+
 **Local python requirements can be installed by:**
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements2.txt
 ```
 
 ## Packages Overview
