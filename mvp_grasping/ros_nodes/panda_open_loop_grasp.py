@@ -45,7 +45,7 @@ class PandaOpenLoopGraspController(object):
         self.cs = ControlSwitcher({'moveit': 'position_joint_trajectory_controller',
                                    'velocity': 'cartesian_velocity_node_controller'})
         self.cs.switch_controller('moveit')
-        self.pc = PandaCommander(group_name='panda_arm_hand')
+        self.pc = PandaCommander(group_name='panda_arm')
 
         self.robot_state = None
         self.ROBOT_ERROR_DETECTED = False
@@ -154,9 +154,11 @@ class PandaOpenLoopGraspController(object):
         raw_input('Press Enter to Start.')
         while not rospy.is_shutdown():
             self.cs.switch_controller('moveit')
-            self.pc.goto_named_pose('grip_ready', velocity=0.25)
+            self.pc.goto_named_pose('ready', velocity=0.25)
             self.pc.goto_pose(self.pregrasp_pose, velocity=0.25)
             self.pc.set_gripper(0.1)
+
+            rospy.signal_shutdown("Intermediate stop")
 
             self.cs.switch_controller('velocity')
 

@@ -22,6 +22,19 @@ class PandaCommander(object):
         self.set_group(group_name)
 
         self.reset_publisher = rospy.Publisher('/franka_control/error_recovery/goal', ErrorRecoveryActionGoal, queue_size=1)
+        # self.set_named_poses()
+
+    def set_named_poses(self):
+        """
+        Set poses used in the application via their name
+        """
+        this_pose = self.active_group.get_current_joint_values()
+        print(this_pose)
+        
+        #   translation then rotation                                 x                    y                    z                     x                    y                   z                    w
+        self.active_group.remember_joint_values('grip_ready', this_pose) #[-0.8680978268436771, -0.6478007817770287, -0.35404076143321106, -2.1504153873157840, -0.2511609577867720, 1.5078568387561373, -0.34946772768514023])
+        self.active_group.remember_joint_values('drop_box', this_pose)  #[ 0.8263036876751351,  1.0896425800490797,  0.82033907273777810, -0.8825330551727532, -0.7649754029929701, 1.7213938517864830,  2.28231075602280060])
+        
 
     def print_debug_info(self):
         if self.active_group:
@@ -51,6 +64,7 @@ class PandaCommander(object):
                     raise ValueError('Group name %s is not valid. Options are %s' % (group_name, self.robot.get_group_names()))
                 self.groups[group_name] = moveit_commander.MoveGroupCommander(group_name)
             self.active_group = self.groups[group_name]
+            
 
     def goto_joints(self, joint_values, group_name=None, wait=True):
         """
@@ -92,6 +106,7 @@ class PandaCommander(object):
         if type(pose) is list:
             pose = list_to_pose(pose)
         self.active_group.set_max_velocity_scaling_factor(velocity)
+        print(self.active_group.get_end_effector_link())
         self.active_group.set_pose_target(pose)
         success = self.active_group.go(wait=wait)
         self.active_group.stop()
@@ -143,6 +158,7 @@ class PandaCommander(object):
             raise ValueError('No active Planning Group')
 
         self.active_group.set_max_velocity_scaling_factor(velocity)
+        print(self.active_group.get_named_targets())
         self.active_group.set_named_target(pose_name)
         success = self.active_group.go(wait=wait)
         self.active_group.stop()
