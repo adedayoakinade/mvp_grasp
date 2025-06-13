@@ -23,7 +23,6 @@ bridge = cv_bridge.CvBridge()
 
 TimeIt.print_output = False
 
-
 class GGCNNService:
     def __init__(self):
         # Get the camera parameters
@@ -45,9 +44,11 @@ class GGCNNService:
         self.curr_img_time = 0
         self.last_image_pose = None
         rospy.Subscriber(rospy.get_param('~camera/depth_topic'), Image, self._depth_img_callback, queue_size=1)
+        
 
         self.waiting = False
         self.received = False
+
 
     def _depth_img_callback(self, msg):
         # Doing a rospy.wait_for_message is super slow, compared to just subscribing and keeping the newest one.
@@ -57,6 +58,8 @@ class GGCNNService:
         self.last_image_pose = tfh.current_robot_pose(self.base_frame, self.camera_frame)
         self.curr_depth_img = bridge.imgmsg_to_cv2(msg)
         self.received = True
+        
+
 
     def compute_service_handler(self, req):
         # if self.curr_depth_img is None:
@@ -82,6 +85,7 @@ class GGCNNService:
 
             # Do grasp prediction
             depth_crop, depth_nan_mask = process_depth_image(depth, self.img_crop_size, 300, return_mask=True, crop_y_offset=self.img_crop_y_offset)
+            # show_image(depth_crop)
             points, angle, width_img, _ = predict(depth_crop, process_depth=False, depth_nan_mask=depth_nan_mask, filters=(2.0, 2.0, 2.0))
 
             # Mask Points Here
@@ -121,6 +125,13 @@ class GGCNNService:
 
             return ret
 
+def color_img_callback(msg):
+    curr_color_img = bridge.imgmsg_to_cv2(msg)
+    show_image(curr_color_img)
+
+def show_image(img):
+    cv2.imshow("Image Window", img)
+    cv2.waitKey(30)
 
 if __name__ == '__main__':
     rospy.init_node('ggcnn_service')
@@ -128,4 +139,7 @@ if __name__ == '__main__':
     import dougsm_helpers.tf_helpers as tfh
     GGCNN = GGCNNService()
     rospy.loginfo('GGCNN Service is ready.')
+
+    # rospy.Subscriber("/ggcnn_service/visualisation", Image, color_img_callback, queue_size=1)
+
     rospy.spin()
